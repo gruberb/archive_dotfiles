@@ -1,0 +1,5 @@
+[user]
+	email = gruberbastian@me.com
+	name = Bastian Gruber
+[alias]
+	l = log --graph --decorate --pretty=oneline
