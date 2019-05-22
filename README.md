@@ -172,6 +172,7 @@ In case of a fire, lost computer or a new machine, I saved the steps and dotfile
 2. `locale-gen`
 3. `localectl set-locale LANG="en_US.UTF8"`
 4. `hwclock --systohc --utc`
+5. `timedatectl set-ntp true`
 
 ##### Change Password
 - `passwd`
