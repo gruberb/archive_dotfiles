@@ -99,11 +99,13 @@ In case of a fire, lost computer or a new machine, I saved the steps and dotfile
     mount /dev/nvme0n1p1 /mnt/boot
     ```
 
-#### Install Arch
+### Part 3 - Install Arc
 1. `pacstrap /mnt/ base`
 2. `genfstab -p /mnt >> /mnt/etc/fstab`
 
-#### Setup Arch
+### Part 4 - Setup Arch
+
+#### Bootloader
 
 > We are now moving from the LiveUSB to the hard drive
 
