@@ -38,9 +38,9 @@ window:
     y: 2
 
   # 4k/Retina
-  dpi:
-    x: 192.0
-    y: 192.0
+  #dpi:
+  #  x: 192.0
+  #  y: 192.0
 
   # Spread additional padding evenly around the terminal content.
   dynamic_padding: false
