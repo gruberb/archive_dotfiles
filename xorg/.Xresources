@@ -1,10 +1,10 @@
 ! fonts
-Xft.dpi: 192 
+Xft.dpi: 210 
 Xft.antialias: true
 Xft.hinting: true
 Xft.rgba: rgb
 Xft.autohint: false
-Xft.hintstyle: hintslight
+Xft.hintstyle: hintfull
 Xft.lcdfilter: lcddefault
 
 ! special
