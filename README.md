@@ -100,8 +100,8 @@ In case of a fire, lost computer or a new machine, I saved the steps and dotfile
     ```
 
 #### Install Arch
-1. `pacstrap /mnt/ base
-2. `genfstab -p /mnt >> /mnt/etc/fstab
+1. `pacstrap /mnt/ base`
+2. `genfstab -p /mnt >> /mnt/etc/fstab`
 
 #### Setup Arch
 
@@ -116,9 +116,9 @@ In case of a fire, lost computer or a new machine, I saved the steps and dotfile
     ```
 4. Install Intel Microcode `pacman -Sy intel-ucode`
 5. Install the kernel as a backup `pacman -S linux-headers linux-lts linux-lts-headers`
-6. NEOVIM `pacman -S nvim`
+6. Install NEOVIM for comfort `pacman -S nvim`
 7. Enable encryption
-    - Modify `etc/mkinitcpio.conf`
+    - Modify `nvim etc/mkinitcpio.conf`
     ```
     HOOKS=(base udev autodetect keyboard keymap modconf block encrypt lvm2 filesystems fsck)
     ```
@@ -128,10 +128,129 @@ In case of a fire, lost computer or a new machine, I saved the steps and dotfile
     ```
     bootctl --path=/boot/ install
     ```
-    - Create the Arch entry
+    - Create the Arch entry `nvim /boot/loader/loader.conf`
     ```
     default arch
 	timeout 3
 	editor 0
 	auto-entries 0
     ```
+9. Create `arch.conf`
+    - `nvim`
+    - `:r !blkid`
+    - Copy `UUID` from entry:
+    ```
+    /dev/nvme0n1p2: UUID="really-long-string-of-alphanumericals" TYPE="crypto_LUKS" PARTLABEL="Linux LVM" PARTUUID="another-long-string-of-alphanumericals"
+    ```
+    - Create `arch.conf`: `nvim /boot/loader/entries/arch.conf`
+    ```
+    title Arch Linux
+    linux /vmlinuz-linux
+    initrd /intel-ucode.img
+    initrd /initramfs-linux.img
+    options cryptdevice=UUID=long-alphanumerica-string-WITHOUT-QUOTES:cryptlvm root=/dev/mapper/main_group-root quiet rw
+    ```
+10. Reboot and start Arch via
+    - `exit`
+    - `reboot now`
+    - Remove USB drive
+    - Select Arch in Boot Menu
+
+#### Drivers, WiFi, Sudo, User
+
+##### WiFi
+- Same as above:
+    - Reconfigure mirrorlist `nvim /etc/pacman.d/mirrorlist`
+    - `cp /etc/netctl/examples/wireless-wpa /etc/netctl/<NAME_OF_WIFI_PROFILE>`
+    - `nvm /etc/netctl/<NAME_OF_WIFI_PROFILE>`
+    - Fill in information, save and exit
+    - `netctl start <NAME_OF_WIFI_PROFILE>
+    - Test: `ping 8.8.8.8`
+
+##### Locale
+1. `/etc/locale.gen`
+2. `locale-gen`
+3. `localectl set-locale LANG="en_US.UTF8"`
+4. `hwclock --systohc --utc`
+
+##### Change Password
+- `passwd`
+
+##### Environment, Drivers
+- Touchpad: `pacman -S xf86-input-libinput`
+- xorg: `pacman -S xorg-server xorg-xinit xorg-apps mesa xterm`
+- Intel Drivers: `pacman -S xf86-video-intel lib32-intel-dri lib32-mesa lib32-libgl`
+
+##### Sudo, User, Root
+1. Sudo: `pacman -S sudo`
+2. Enable sudo:
+    - `EDITOR=nvim visudo`
+    - `visudo`
+    - Uncomment:
+    ```
+    ## Uncomment to allow members of group wheel to execute any command
+    # %wheel ALL=(ALL) ALL # <-- this line if its now clear enough, fam
+    ```
+3. Create a new User: `useradd -m -G wheel -s /bin/bash <NAME>`
+4. Set Password: `passwd <NAME>`
+5. `sudo reboot now` to check if everything worked
+
+#### Desktop
+1. `pacman -S i3`
+2. `pacman -S ttf-dejavu ttf-liberation noto-fonts`
+3. `pacman -S openssh`
+4. Setup SSH
+```
+mkdir ~/.ssh
+cp <private key> ~/.ssh/<private key>
+cp <public key> ~/.ssh/<public key>.pub
+chmod 700 ~/.ssh
+chmod 600 ~/.ssh/<private key>
+chmod 600 ~/.ssh/<public key>.pub
+```
+5. Aurman
+	-	`curl -sSL https://github.com/polygamma.gpg | gpg --import -`
+	- Install
+	```
+	mkdir ~/aur_pkg
+    cd aur_pkg
+    git clone https://aur.archlinux.org/aurman.git
+    cd aurmen/
+    makepkg -si # DO NOT USE SUDO HERE
+	```
+
+#### Lenovo Thinkpad X1 specifics
+- CPU Throttling
+	```
+	aurman -S lenovo-throttling-fix-git
+	sudo systemctl enable --now lenovo_fix.service
+	```
+- BIOS update
+	- `sudo pacman -S fwupd`
+	- `fwupdmgr refresh`
+	- `fwupdmgr get-updates`
+	- Hook up Thinkpad to power
+	- `fwupdmgr update`
+- Trimming SSD `systemctl enable fstrim.timer`
+- Hibernate support
+	- Update HOOKS `nvim /etc/mkinitcpio.conf`
+	```
+	HOOKS=(base udev autodetect keyboard keymap modconf block encrypt lvm2 resume filesystems fsck)
+	```
+	- Regenerate initramfs
+	```
+	mkinitcpio -p linux
+	mkinitcpio -p linux-lts
+	```
+	- Update `arch.conf`
+	```
+	title Arch Linux
+    linux /vmlinuz-linux
+    initrd /intel-ucode.img
+    initrd /initramfs-linux.img
+    options cryptdevice=UUID=<LONG-ALPHANUM-STRING>:cryptlvm root=/dev/mapper/main_group-root resume=/dev/mapper/main_group-swap quiet rw
+	```
+- Suspend Support
+	- !!Bios has to be >= 1.30!!
+	- Reboot to Bios and change `Config > Power > Sleep State > Linux`
+	- Save and Reboot
