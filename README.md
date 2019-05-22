@@ -99,7 +99,7 @@ In case of a fire, lost computer or a new machine, I saved the steps and dotfile
     mount /dev/nvme0n1p1 /mnt/boot
     ```
 
-### Part 3 - Install Arc
+### Part 3 - Install Arch
 1. `pacstrap /mnt/ base`
 2. `genfstab -p /mnt >> /mnt/etc/fstab`
 
