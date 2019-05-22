@@ -1,0 +1,152 @@
+[settings]
+screenchange-reload = true
+
+[global/wm]
+margin-top = 12
+margin-bottom = 12 
+
+[colors]
+background = #2d2d2d
+foreground = #d3c0c8
+primary = #ffb52a
+secondary = #e60053
+alert = #bd2c40
+bright-black = #747369
+
+[bar/top]
+bottom = false
+width = 100%
+height = 60
+offset-x = 0
+offset-y = 0
+
+background = ${colors.background}
+foreground = ${colors.foreground}
+
+padding-left = 0
+padding-right = 2
+module-margin-left = 1
+module-margin-right = 0
+
+font-0 = "Noto Sans Mono:pixelsize=16;3"
+font-1 = "Material Design Icons:pixelsize=17;3"
+font-2 = "Noto Sans Symbols:pixelsize=16;3"
+font-3 = "Noto Color Emoji:pixelsize=16;3"
+font-4 = "Noto Emoji:pixelsize=16;3"
+font-5 = "FreeSans:pixelsize=16;3"
+
+fixed-center = true
+
+modules-left = i3
+modules-center = wlan
+modules-right = cpu volume battery date
+
+[module/i3]
+type = internal/i3
+format = <label-state> <label-mode>
+index-sort = true
+strip-wsnumbers = true
+wrapping-scroll = false
+
+label-mode-padding = 2
+label-mode-foreground = ${colors.background}
+label-mode-background = ${colors.primary}
+
+; focused = Active workspace on focused monitor
+label-focused = %name%
+label-focused-background = ${colors.foreground}
+label-focused-underline = ${colors.foreground}
+label-focused-foreground = ${colors.background}
+label-focused-padding = 2
+
+; unfocused = Inactive workspace on any monitor
+label-unfocused = %name%
+label-unfocused-foreground = ${colors.foreground}
+label-unfocused-padding = 2
+
+; visible = Active workspace on unfocused monitor
+label-visible = %name%
+label-visible-background = ${self.label-focused-background}
+label-visible-padding = ${self.label-focused-padding}
+
+; urgent = Workspace with urgency hint set
+label-urgent = %name%
+label-urgent-background = ${colors.alert}
+label-urgent-padding = 2
+
+[module/filesystem]
+type = internal/fs
+interval = 25
+mount-0 = /
+label-mounted = %{F#0a81f5}%mountpoint%%{F-}: %percentage_used%%
+label-unmounted = %mountpoint% not mounted
+label-unmounted-foreground = ${colors.foreground}
+
+[module/mpd]
+type = internal/mpd
+format-online = <label-song>  <icon-prev> <icon-stop> <toggle> <icon-next>
+
+label-song-maxlen = 25
+label-song-ellipsis = true
+
+[module/xbacklight]
+type = internal/xbacklight
+format = <label>
+enable-scroll = true
+
+[module/cpu]
+type = internal/cpu
+interval = 2
+format-prefix-foreground = ${colors.foreground}
+label = C %percentage%%
+
+[module/memory]
+type = internal/memory
+interval = 2
+format-prefix = " "
+format-prefix-foreground = ${colors.foreground}
+label = %percentage_used%%
+
+[module/wlan]
+type = internal/network
+interface = wlp2s0
+interval = 3.0
+
+format-connected = <label-connected>
+label-connected = %essid%
+
+format-disconnected = offline
+
+[module/date]
+type = internal/date
+interval = 5
+
+date = "%d/%m"
+time = %H:%M
+
+format-prefix-foreground = ${colors.foreground}
+
+label = | %date% %time%
+
+[module/volume]
+type = internal/alsa
+
+format-volume = <label-volume>
+format-muted-foreground = ${colors.foreground}
+label-muted = | V ---
+label-volume = | V %percentage%%
+
+[module/battery]
+type = internal/battery
+battery = BAT0
+adapter = AC
+full-at = 100
+
+time-format = %H:%M
+format-full = <label-full>
+format-charging = <label-charging>
+format-discharging = <label-discharging>
+
+label-charging = | ^ %percentage%%
+label-discharging = | B %percentage%%
+label-full = | B 100%
