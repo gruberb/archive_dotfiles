@@ -2,6 +2,7 @@
 
 In case of a fire, lost computer or a new machine, I saved the steps and dotfiles to be able to quickly reproduce my setup.
 
+Copied a fair share from [@ejmg](https://github.com/ejmg/an-idiots-guide-to-installing-arch-on-a-lenovo-carbon-x1-gen-6) and [@yoshuawuyts](https://github.com/yoshuawuyts/dotfiles)
 
 ## Install Arch
 
