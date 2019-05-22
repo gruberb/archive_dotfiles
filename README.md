@@ -4,6 +4,8 @@ In case of a fire, lost computer or a new machine, I saved the steps and dotfile
 
 Copied a fair share from [@ejmg](https://github.com/ejmg/an-idiots-guide-to-installing-arch-on-a-lenovo-carbon-x1-gen-6) and [@yoshuawuyts](https://github.com/yoshuawuyts/dotfiles)
 
+![htop on Arch](https://raw.githubusercontent.com/gruberb/dotfiles/master/screen.png) ![Rust dev on Arch](https://raw.githubusercontent.com/gruberb/dotfiles/master/code.png)
+
 ## Install Arch
 
 ### Part 1 - Preperation
