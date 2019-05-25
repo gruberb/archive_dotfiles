@@ -96,12 +96,12 @@ bindsym $mod+a focus parent
 # We use variables to avoid repeating the names in multiple places.
 set $ws1 "Terminal"
 set $ws2 "Browser"
-set $ws3 "Void"
-set $ws4 "Void"
-set $ws5 "Void"
-set $ws6 "Void"
-set $ws7 "Void"
-set $ws8 "Void"
+set $ws3 "Zero Void"
+set $ws4 "First Void"
+set $ws5 "Second Void"
+set $ws6 "Third Void"
+set $ws7 "Fourth Void"
+set $ws8 "Fith Void"
 set $ws9 "Multimedia"
 set $ws10 "VPN"
 
@@ -128,6 +128,11 @@ bindsym $mod+Shift+7 move container to workspace $ws7
 bindsym $mod+Shift+8 move container to workspace $ws8
 bindsym $mod+Shift+9 move container to workspace $ws9
 bindsym $mod+Shift+0 move container to workspace $ws10
+
+# assign applications to workspaces
+assign [class="alacritty|Alacritty"] $ws1
+assign [class="firefox|Firefox"] $ws2
+
 
 # reload the configuration file
 bindsym $mod+Shift+c reload
@@ -178,7 +183,7 @@ bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute 0 toggle
 #        status_command i3status
 #}
 
-# Start Polybar
+# Startup script i3 
 exec_always --no-startup-id "$HOME/.config/i3/startup"
 
 # Hide title bar
