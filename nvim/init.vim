@@ -7,13 +7,21 @@ set expandtab           " Insert spaces when TAB is pressed.
 set tabstop=4           " Render TABs using this many spaces.
 set shiftwidth=4        " Indentation amount for < and > commands.
 
+" Set SinColoumn and give it background colour
+" ============================================
+set signcolumn=yes
+highlight clear SignColumn
+
 " Required for operations modifying multiple buffers like rename.
 set hidden
 
 " PlugIns
 " =======
 call plug#begin('~/.local/share/nvim/plugged')
-Plug 'autozimu/LanguageClient-neovim', { 'do': ':UpdateRemotePlugins' }
+Plug 'autozimu/LanguageClient-neovim', {
+    \ 'branch': 'next',
+    \ 'do': 'bash install.sh',
+    \ }
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 if has('nvim')
@@ -41,16 +49,12 @@ call deoplete#custom#option('sources', {
     \ 'rust': ['LanguageClient'],
 \})
 
-
 " Language Servers
 " ================
 let g:LanguageClient_autoStart = 1
 let g:LanguageClient_serverCommands = {
-    \ 'rust': ['rustup', 'run', 'nightly', 'rls'],
-    \ }
-let g:LanguageClient_rootMarkers = {
-            \ 'rust': ['Cargo.toml', '.git'],
-            \ }
+    \ 'rust': ['~/.cargo/bin/rustup', 'run', 'stable', 'rls'],
+   \ }
 
 set completefunc=LanguageClient#complete
 
