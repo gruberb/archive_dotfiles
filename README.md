@@ -78,6 +78,7 @@ Copied a fair share from [@ejmg](https://github.com/ejmg/an-idiots-guide-to-inst
     - `y` (exit)
 
 #### Encrypt the hard drive
+1. `cryptsetup luksFormat /dev/nvme0n1p2`
 1. `cryptsetup open --type luks /dev/nvme0n1p2 main_part` (use our second partition here)
 2. Create a physical volume inside our just created LVM partition: `pvcreate /dev/mapper/main_part`
 3. Create a volume group: `vgcreate main_group /dev/mapper/main_part`
