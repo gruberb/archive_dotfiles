@@ -63,7 +63,7 @@ Copied a fair share from [@ejmg](https://github.com/ejmg/an-idiots-guide-to-inst
 #### Partitioning Hard Drive
 1. Figure out name of hard drive: `lsblk` (`nvme0n1`)
 2. Format: `gdisk /dev/nvme0n1`
-    - `o`, answer with `y`
+    - `o`, answer with `Y`
     - `n` (new partition)
     - `Enter`
     - `Enter`
@@ -75,7 +75,7 @@ Copied a fair share from [@ejmg](https://github.com/ejmg/an-idiots-guide-to-inst
     - `Enter`
     - `8E00`
     - `w` (write to disk)
-    - `y` (exit)
+    - `YES` (exit)
 
 #### Encrypt the hard drive
 1. `cryptsetup luksFormat /dev/nvme0n1p2`
@@ -122,13 +122,15 @@ Copied a fair share from [@ejmg](https://github.com/ejmg/an-idiots-guide-to-inst
     ```
 4. Install Intel Microcode `pacman -Sy intel-ucode`
 5. Install the kernel as a backup `pacman -S linux-headers linux-lts linux-lts-headers`
-6. Install NEOVIM for comfort `pacman -S nvim`
+6. Install NEOVIM for comfort `pacman -S neovim`
 7. Enable encryption
-    - Modify `nvim etc/mkinitcpio.conf`
+    - Modify `nvim /etc/mkinitcpio.conf`
     ```
     HOOKS=(base udev autodetect keyboard keymap modconf block encrypt lvm2 filesystems fsck)
     ```
     - Regenerate `mkinitcpio -p linux`
+    - Regenerate for linux-lts `mkinitcpio -p linux-lts`
+    
 8. Setup the bootloader
     - Create the loader with `bootctl`
     ```
@@ -203,10 +205,12 @@ Copied a fair share from [@ejmg](https://github.com/ejmg/an-idiots-guide-to-inst
 5. `sudo reboot now` to check if everything worked
 
 #### Desktop
-1. `pacman -S i3`
-2. `pacman -S ttf-dejavu ttf-liberation noto-fonts`
+1. `pacman -S i3-vm`
+2. `pacman -S base-devel`
 3. `pacman -S openssh`
-4. Setup SSH
+4. `pacman -S git`
+
+5. Setup SSH
 ```
 mkdir ~/.ssh
 cp <private key> ~/.ssh/<private key>
@@ -215,21 +219,18 @@ chmod 700 ~/.ssh
 chmod 600 ~/.ssh/<private key>
 chmod 600 ~/.ssh/<public key>.pub
 ```
-5. Aurman
-	-	`curl -sSL https://github.com/polygamma.gpg | gpg --import -`
-	- Install
-	```
-	mkdir ~/aur_pkg
-    cd aur_pkg
-    git clone https://aur.archlinux.org/aurman.git
-    cd aurmen/
-    makepkg -si # DO NOT USE SUDO HERE
-	```
+
+6. yay
+```
+git clone https://aur.archlinux.org/yay.git
+cd yay
+makepkg -si
+```
 
 #### Lenovo Thinkpad X1 specifics
 - CPU Throttling
 	```
-	aurman -S lenovo-throttling-fix-git
+	yay -S lenovo-throttling-fix-git
 	sudo systemctl enable --now lenovo_fix.service
 	```
 - BIOS update
